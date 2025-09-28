@@ -19,7 +19,7 @@ const FormComponent = ({
   onSubmit: () => void;
   isDirty: boolean;
   isError: boolean;
-  errMsg: string;
+  errMsg?: string;
   isLoading: boolean;
   isValid: boolean;
 }) => {

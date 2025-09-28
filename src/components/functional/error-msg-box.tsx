@@ -5,7 +5,7 @@ const ErrorMsgBox = ({
   message,
   className,
 }: {
-  message: string;
+  message?: string;
   className?: string;
 }) => {
   return (

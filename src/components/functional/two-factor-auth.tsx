@@ -21,7 +21,7 @@ export default function TwoFactorAuth({
   code: string[];
   setCode: React.Dispatch<React.SetStateAction<string[]>>;
   genCode?: string;
-  errMsg: string;
+  errMsg?: string;
   isLoading: boolean;
   goBack: () => void;
 }) {

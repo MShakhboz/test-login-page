@@ -23,8 +23,8 @@ export default function SignInPage() {
   const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
   const [twoAuth, setTwoAuth] = useState<Boolean>(false);
   const router = useRouter();
-  const [login, { data, error, isLoading, isError }] = useLoginMutation();
-  const [sendCode, { error: twoAuthError, isLoading: is2faLoading }] =
+  const [login, { data, error = {}, isLoading, isError }] = useLoginMutation();
+  const [sendCode, { error: twoAuthError = {}, isLoading: is2faLoading }] =
     useSend2faCodeMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,7 +58,7 @@ export default function SignInPage() {
           <FormComponent
             onSubmit={form.handleSubmit(onSubmit)}
             form={form}
-            errMsg={error?.data?.message}
+            errMsg={"data" in error ? error?.data?.message : ""}
             isError={isError}
             isDirty={isDirty}
             isValid={isValid}
@@ -72,7 +72,7 @@ export default function SignInPage() {
             goBack={() => setTwoAuth(false)}
             setCode={setCode}
             genCode={data?.data?.code}
-            errMsg={twoAuthError?.data?.message}
+            errMsg={"data" in twoAuthError ? twoAuthError?.data?.message : ""}
             isLoading={is2faLoading}
           />
         )}
