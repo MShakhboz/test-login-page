@@ -13,30 +13,14 @@ export const authService = baseApi.injectEndpoints({
       }),
     }),
 
-    send2faCode: build.mutation<any, { code: string }>({
+    send2faCode: build.mutation<AuthType, { code: string }>({
       query: (body) => ({
         url: "two-auth",
         method: "POST",
         body,
       }),
     }),
-
-    logout: build.mutation<undefined, void>({
-      query: () => ({
-        url: `api/v1/authenticate/user/logout`,
-        method: "POST",
-      }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled;
-        } finally {
-          dispatch({ type: "auth/logout" });
-          dispatch(baseApi.util.resetApiState());
-        }
-      },
-    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useSend2faCodeMutation } =
-  authService;
+export const { useLoginMutation, useSend2faCodeMutation } = authService;

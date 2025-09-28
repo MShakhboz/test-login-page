@@ -2,24 +2,9 @@ import { AnyAction, combineReducers } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import { baseApi } from "@/api/config/baseApi";
 import rootPersistConfig from "@/store/persistConfig";
-// import {
-//   analytics,
-//   auth,
-//   decisions,
-//   drawers,
-//   loans,
-//   me,
-//   referrals,
-//   rulesets,
-//   toastMsg,
-//   userPreferences,
-//   users,
-//   ui,
-// } from "./slices";
 
 export const appReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
-  //   userPreferences: persistReducer(userPreferencesConfig(), userPreferences),
 });
 
 const rootReducer = (state: any, action: AnyAction) => {

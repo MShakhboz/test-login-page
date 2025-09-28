@@ -1,5 +1,4 @@
 // app/api/login/route.ts
-// import { sendCode } from "@/lib/send-code";
 
 import { htmlContent } from "@/components/functional/email-template";
 import { NextResponse } from "next/server";
@@ -36,17 +35,16 @@ export async function POST(req: Request) {
         { status: 200 }
       );
 
-      const { data, error } = await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: email,
-        subject: "2FA code",
-        html: htmlContent(code),
-      });
+      //   I wanted to set up an email sender, but since it requires configuring a domain
+      //   const { data, error } = await resend.emails.send({
+      //     from: "onboarding@resend.dev",
+      //     to: email,
+      //     subject: "2FA code",
+      //     html: htmlContent(code),
+      //   });
 
       // set cookie instead of localStorage
       res.cookies.set("two-auth-code", code, {
-        // httpOnly: true,
-        // secure: process.env.NODE_ENV === "production",
         path: "/",
         maxAge: 60 * 5, // 5 min expiry
       });

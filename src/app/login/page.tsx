@@ -8,6 +8,7 @@ import FormComponent from "@/components/functional/form-component";
 import TwoFactorAuth from "@/components/functional/two-factor-auth";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
   email: z.string().email({
@@ -20,12 +21,10 @@ export const formSchema = z.object({
 
 export default function SignInPage() {
   const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
+  const router = useRouter();
   const [login, { data, error, isLoading, isSuccess, isError }] =
     useLoginMutation();
-  const [
-    sendCode,
-    { data: twoAuthData, isSuccess: is2AuthSuccess, isError: is2AuthError },
-  ] = useSend2faCodeMutation();
+  const [sendCode, { error: twoAuthError }] = useSend2faCodeMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,8 +42,11 @@ export default function SignInPage() {
     login(values);
   };
 
-  const onLogin = () => {
-    sendCode({ code: code?.join("") });
+  const onLogin = async () => {
+    const { data } = await sendCode({ code: code?.join("") });
+    if (data?.success) {
+      router.replace("/");
+    }
   };
 
   return (
@@ -65,10 +67,8 @@ export default function SignInPage() {
             onLogin={onLogin}
             code={code}
             setCode={setCode}
-            isSuccess={is2AuthSuccess}
-            isError={is2AuthError}
-            genCode={data?.data.code}
-            msg={twoAuthData?.message}
+            genCode={data?.data?.code}
+            errMsg={twoAuthError?.data?.message}
           />
         )}
       </Card>

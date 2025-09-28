@@ -13,17 +13,13 @@ export default function TwoFactorAuth({
   code,
   setCode,
   genCode,
-  isSuccess,
-  isError,
-  msg,
+  errMsg,
 }: {
   onLogin: () => void;
   code: string[];
   setCode: React.Dispatch<React.SetStateAction<string[]>>;
   genCode: string;
-  isSuccess: boolean;
-  isError: boolean;
-  msg: string;
+  errMsg: string;
 }) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const handleInputChange = (index: number, value: string) => {
@@ -89,7 +85,7 @@ export default function TwoFactorAuth({
           <p className="text-[32px] font-bold text-red my-4">{genCode}</p>
 
           {/* Code Input */}
-          <div className="flex gap-3 justify-center mb-8">
+          <div className="flex gap-3 justify-center">
             {code.map((digit, index) => (
               <input
                 key={index}
@@ -104,17 +100,20 @@ export default function TwoFactorAuth({
                 onPaste={handlePaste}
                 className={cn(
                   "w-14 h-16 text-center text-2xl font-semibold border-1 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/20 transition-all bg-white",
-                  isSuccess && "border-green-600",
-                  isError && "border-destructive"
+                  errMsg && "border-destructive"
                 )}
                 aria-label={`Digit ${index + 1}`}
               />
             ))}
-            {isError && <p className="text-destructive">{isError && msg}</p>}
           </div>
+          {errMsg && (
+            <p className="text-destructive my-3 text-start">
+              {errMsg && errMsg}
+            </p>
+          )}
           {code.join("").length === 6 && (
             <Button
-              className="w-full h-10 mt-2 bg-primary hover:bg-primary/80 text-white font-medium cursor-pointer"
+              className="w-full h-10 mt-6 bg-primary hover:bg-primary/80 text-white font-medium cursor-pointer"
               variant="secondary"
               onClick={onLogin}
             >
