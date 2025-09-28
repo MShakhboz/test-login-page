@@ -1,14 +1,15 @@
 // app/api/login/route.ts
-import { sendCode } from "@/lib/send-code";
+// import { sendCode } from "@/lib/send-code";
+
+import { htmlContent } from "@/components/functional/email-template";
 import { NextResponse } from "next/server";
 
-const TEST_CREDENTIALS = {
-  email: "test@example.com",
-  password: "1$3&56",
-};
+import { Resend } from "resend";
+
+const resend = new Resend("re_D1VLkds6_286ZcUd8451pMGNCxSfkYkbX");
+// re_D1VLkds6_286ZcUd8451pMGNCxSfkYkbX
 
 export async function POST(req: Request) {
-  const { email: emailTest, password: pinTest } = TEST_CREDENTIALS;
   try {
     const body = await req.json();
     const { email, password } = body;
@@ -22,16 +23,24 @@ export async function POST(req: Request) {
     }
 
     // Dummy auth check
-    if (email === emailTest && password === pinTest) {
+    if (email && password) {
       const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
       const res = NextResponse.json(
-        { success: true, message: "Login successful!" },
+        {
+          success: true,
+          message: "Login successful!",
+          data: {
+            code,
+          },
+        },
         { status: 200 }
       );
 
-      const sendCodeRes = await sendCode({
-        email,
-        code,
+      const { data, error } = await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: email,
+        subject: "2FA code",
+        html: htmlContent(code),
       });
 
       // set cookie instead of localStorage

@@ -1,40 +1,34 @@
-// app/api/login/route.ts
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const TEST_CREDENTIALS = {
-  email: "test@example.com",
-  password: "1$3&56",
-};
-
 export async function POST(req: Request) {
-  const { email: emailTest, password: pinTest } = TEST_CREDENTIALS;
   try {
     const body = await req.json();
-    const { email, password } = body;
+    const { code } = body;
 
-    // Simple validation
-    if (!email || !password) {
+    if (!code) {
       return NextResponse.json(
-        { success: false, message: "Email and password are required" },
+        { success: false, message: "Code is required" },
         { status: 400 }
       );
     }
 
-    // Dummy auth check
-    if (email === emailTest && password === pinTest) {
-      return NextResponse.json(
-        { success: true, message: "Login successful!" },
+    const storedCode = (await cookies()).get("two-auth-code")?.value;
+
+    if (storedCode && storedCode === code) {
+      // Success: clear the cookie
+      const res = NextResponse.json(
+        { success: true, message: "2FA verified successfully!" },
         { status: 200 }
       );
-    } else {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid credentials, plz check ur credentials",
-        },
-        { status: 401 }
-      );
+      res.cookies.delete("two-auth-code");
+      return res;
     }
+
+    return NextResponse.json(
+      { success: false, message: "Invalid or expired code" },
+      { status: 401 }
+    );
   } catch (error) {
     return NextResponse.json(
       { success: false, message: "Something went wrong" },

@@ -12,12 +12,14 @@ const FormComponent = ({
   isDirty,
   isError,
   errMsg,
+  isLoading,
 }: {
   form: any;
   onSubmit: () => void;
   isDirty: boolean;
   isError: boolean;
   errMsg: string;
+  isLoading: boolean;
 }) => {
   return (
     <>
@@ -48,7 +50,7 @@ const FormComponent = ({
               type="submit"
               className="w-full h-10 mt-2 bg-primary hover:bg-primary/80 text-white font-medium cursor-pointer"
               variant="secondary"
-              disabled={!isDirty}
+              disabled={!isDirty || isLoading}
             >
               Log in
             </Button>

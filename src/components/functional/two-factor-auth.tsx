@@ -6,15 +6,24 @@ import { useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import Icon from "./Icon";
 import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
 export default function TwoFactorAuth({
   onLogin,
   code,
   setCode,
+  genCode,
+  isSuccess,
+  isError,
+  msg,
 }: {
   onLogin: () => void;
   code: string[];
   setCode: React.Dispatch<React.SetStateAction<string[]>>;
+  genCode: string;
+  isSuccess: boolean;
+  isError: boolean;
+  msg: string;
 }) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const handleInputChange = (index: number, value: string) => {
@@ -73,9 +82,11 @@ export default function TwoFactorAuth({
             Two-Factor Authentication
           </h1>
 
-          <p className="text-foreground mb-12 text-lg leading-relaxed">
+          <p className="text-foreground text-lg leading-relaxed">
             Enter the 6-digit code from the Google Authenticator app
           </p>
+
+          <p className="text-[32px] font-bold text-red my-4">{genCode}</p>
 
           {/* Code Input */}
           <div className="flex gap-3 justify-center mb-8">
@@ -91,10 +102,15 @@ export default function TwoFactorAuth({
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={handlePaste}
-                className="w-14 h-16 text-center text-2xl font-semibold border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all bg-white"
+                className={cn(
+                  "w-14 h-16 text-center text-2xl font-semibold border-1 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/20 transition-all bg-white",
+                  isSuccess && "border-green-600",
+                  isError && "border-destructive"
+                )}
                 aria-label={`Digit ${index + 1}`}
               />
             ))}
+            {isError && <p className="text-destructive">{isError && msg}</p>}
           </div>
           {code.join("").length === 6 && (
             <Button
