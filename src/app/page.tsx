@@ -27,6 +27,10 @@ export default function SignInPage() {
     },
   });
 
+  const {
+    formState: { isDirty, isValid },
+  } = form;
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     // Handle sign in logic here
@@ -69,8 +73,9 @@ export default function SignInPage() {
               />
               <Button
                 type="submit"
-                className="w-full h-12 mt-6 bg-gray-200 hover:bg-gray-300 text-gray-600 font-medium"
+                className="w-full h-10 mt-6 bg-primary hover:bg-primary/80 text-white font-medium cursor-pointer"
                 variant="secondary"
+                disabled={!isDirty}
               >
                 Log in
               </Button>
