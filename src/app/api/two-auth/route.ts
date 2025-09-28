@@ -1,5 +1,4 @@
 // app/api/login/route.ts
-import { sendCode } from "@/lib/send-code";
 import { NextResponse } from "next/server";
 
 const TEST_CREDENTIALS = {
@@ -23,25 +22,10 @@ export async function POST(req: Request) {
 
     // Dummy auth check
     if (email === emailTest && password === pinTest) {
-      const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
-      const res = NextResponse.json(
+      return NextResponse.json(
         { success: true, message: "Login successful!" },
         { status: 200 }
       );
-
-      const sendCodeRes = await sendCode({
-        email,
-        code,
-      });
-
-      // set cookie instead of localStorage
-      res.cookies.set("two-auth-code", code, {
-        // httpOnly: true,
-        // secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: 60 * 5, // 5 min expiry
-      });
-      return res;
     } else {
       return NextResponse.json(
         {
