@@ -14,12 +14,16 @@ export default function TwoFactorAuth({
   setCode,
   genCode,
   errMsg,
+  isLoading,
+  goBack,
 }: {
   onLogin: () => void;
   code: string[];
   setCode: React.Dispatch<React.SetStateAction<string[]>>;
-  genCode: string;
+  genCode?: string;
   errMsg: string;
+  isLoading: boolean;
+  goBack: () => void;
 }) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const handleInputChange = (index: number, value: string) => {
@@ -65,7 +69,10 @@ export default function TwoFactorAuth({
     <div className="relative">
       {/* Header */}
       <div className="flex items-center justify-center relative p-6">
-        <button className="absolute top-2 left-6 p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <button
+          className="absolute top-2 left-6 p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+          onClick={goBack}
+        >
           <ArrowLeft className="w-6 h-6 text-gray-700" />
         </button>
         <Icon />
@@ -89,7 +96,9 @@ export default function TwoFactorAuth({
             {code.map((digit, index) => (
               <input
                 key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
+                ref={(el) => {
+                  inputRefs.current[index] = el;
+                }}
                 type="number"
                 inputMode="numeric"
                 pattern="[0-9]*"
@@ -107,7 +116,7 @@ export default function TwoFactorAuth({
             ))}
           </div>
           {errMsg && (
-            <p className="text-destructive my-3 text-start">
+            <p className="text-destructive my-2 text-start">
               {errMsg && errMsg}
             </p>
           )}
@@ -116,6 +125,7 @@ export default function TwoFactorAuth({
               className="w-full h-10 mt-6 bg-primary hover:bg-primary/80 text-white font-medium cursor-pointer"
               variant="secondary"
               onClick={onLogin}
+              disabled={isLoading}
             >
               Log in
             </Button>

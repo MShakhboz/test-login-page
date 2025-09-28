@@ -1,7 +1,7 @@
 export type AuthType = {
-  status: number;
+  success: boolean;
   data: {
-    message: string;
+    code: string;
     success: boolean;
   };
 };
