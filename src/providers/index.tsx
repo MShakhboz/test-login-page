@@ -1,7 +1,7 @@
 "use client";
 
-import { ReduxProvider } from "./redux-provider";
+import { ReactQueryProvider } from "./react-queary-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <ReduxProvider>{children}</ReduxProvider>;
+  return <ReactQueryProvider>{children}</ReactQueryProvider>;
 }

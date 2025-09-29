@@ -1,26 +1,22 @@
-import { baseApi } from "@/api/config/baseApi";
-import { AuthType } from "./type";
+import axios from "axios";
+import { AuthResponse, AuthError } from "./type";
 import * as z from "zod";
 import { formSchema } from "@/app/login/page";
 
-export const authService = baseApi.injectEndpoints({
-  endpoints: (build) => ({
-    login: build.mutation<AuthType, z.infer<typeof formSchema>>({
-      query: (body) => ({
-        url: `login`,
-        method: "POST",
-        body,
-      }),
-    }),
+export const login = async (
+  body: z.infer<typeof formSchema>
+): Promise<AuthResponse> => {
+  const { data } = await axios.post<AuthResponse>("/api/login", body);
+  if (!data.success)
+    throw { response: { data: { message: "Login failed" } } } as AuthError;
+  return data;
+};
 
-    send2faCode: build.mutation<AuthType, { code: string }>({
-      query: (body) => ({
-        url: "two-auth",
-        method: "POST",
-        body,
-      }),
-    }),
-  }),
-});
-
-export const { useLoginMutation, useSend2faCodeMutation } = authService;
+export const send2faCode = async (body: {
+  code: string;
+}): Promise<AuthResponse> => {
+  const { data } = await axios.post<AuthResponse>("/api/two-auth", body);
+  if (!data.success)
+    throw { response: { data: { message: "2FA failed" } } } as AuthError;
+  return data;
+};
