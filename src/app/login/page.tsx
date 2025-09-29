@@ -68,7 +68,7 @@ export default function SignInPage() {
           <FormComponent
             onSubmit={form.handleSubmit(onSubmit)}
             form={form}
-            errMsg={loginError?.response?.data?.message}
+            errMsg={loginError?.message}
             isError={isLoginError}
             isDirty={isDirty}
             isValid={isValid}
@@ -82,7 +82,7 @@ export default function SignInPage() {
             goBack={() => setTwoAuth(false)}
             setCode={setCode}
             genCode={loginData?.data?.code}
-            errMsg={twoFaError?.response?.data?.message}
+            errMsg={twoFaError?.message}
             isLoading={is2faLoading}
           />
         )}

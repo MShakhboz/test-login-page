@@ -9,5 +9,5 @@ export type AuthResponse = {
 };
 
 export type AuthError = {
-  response: { data: { message: string } };
+  message: string;
 };
