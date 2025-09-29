@@ -1,37 +1,31 @@
-# 🔑 Login Page Test
+# Login Page Test Project
 
-A simple **Next.js 15** login page project built with **React 19**, **Tailwind CSS 4**, and **Redux Toolkit**.  
-It includes authentication form validation, and a clean modern UI.
+This project is a test implementation of a login page using **Next.js**, showcasing modern React patterns and state management approaches.
 
----
+## Features
 
-## 📝 Note from the Developer
+- Login form with **React Hook Form** and **Zod** validation
+- Two-Factor Authentication (2FA) flow
+- API handling using **React Query**
+- Includes some original **Redux** and **RTK Query** code for reference
 
-Initially, I planned to implement more advanced **server-side features**, but to keep the project lightweight and focused, I decided to keep the API routes simple and straightforward.  
-For the UI, I used **shadcn/ui** components to speed up development while keeping the design consistent and modern.
+## Technical Choices
 
----
+Initially, the project was implemented using **Redux** and **RTK Query** due to an early misunderstanding of the requirements. After reviewing them, RTK Query was replaced with **React Query** to better align with the project needs. The original Redux and RTK Query code has been retained, allowing the project to also demonstrate my experience with **Redux** and **Redux Toolkit Query**.
 
-## 🚀 Tech Stack
+## Tech Stack
 
-- [Next.js 15](https://nextjs.org/) – App Router + Turbopack
-- [React 19](https://react.dev/)
-- [Tailwind CSS 4](https://tailwindcss.com/)
-- [shadcn/ui](https://ui.shadcn.com/) – Prebuilt UI components
-- [Redux Toolkit](https://redux-toolkit.js.org/) + [Redux Persist](https://github.com/rt2zz/redux-persist)
-- [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
-- [Resend](https://resend.com/) – Email sending
-- [React Email](https://react.email/) – Email templates
-- [Radix UI](https://www.radix-ui.com/) + [Lucide Icons](https://lucide.dev/)
+- **Next.js** – React framework for server-side rendering and routing
+- **React Query** – For API data fetching and state management
+- **Redux & Redux Toolkit Query** – Partially retained for demonstration
+- **React Hook Form + Zod** – Form state management and validation
+- **Axios** – HTTP requests
+- **Tailwind CSS** – Styling
 
----
+## Getting Started
 
-## 📦 Installation
-
-Clone the repository and install dependencies:
+1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/login-page-test.git
-cd login-page-test
-npm install
+git clone <repo-url>
 ```
